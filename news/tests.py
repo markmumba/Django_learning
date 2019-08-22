@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Editor,Articles,tags
+import datetime as dt
 
 
 
@@ -33,7 +34,7 @@ class EditorTestClass(TestCase):
     #     editors = Editor.objects.all()
     #     self.assertTrue(len(editors)>0)
 
-class ArticleTestClass(TestCase):
+class ArticlesTestClass(TestCase):
 
     def setUp(self):
         # Creating a new editor and saving it
@@ -44,12 +45,20 @@ class ArticleTestClass(TestCase):
         self.new_tag = tags(name = 'testing')
         self.new_tag.save()
 
-        self.new_article= Article(title = 'Test Article',post = 'This is a random test Post',editor = self.james)
-        self.new_article.save()
+        self.new_Articles= Articles(title = 'Test Articles',post = 'This is a random test Post',editor = self.james)
+        self.new_Articles.save()
 
-        self.new_article.tags.add(self.new_tag)
+        self.new_Articles.tags.add(self.new_tag)
 
     def tearDown(self):
         Editor.objects.all().delete()
         tags.objects.all().delete()
-        Article.objects.all().delete()
+        Articles.objects.all().delete()
+
+
+    def test_get_news_today(self):
+        today_news = Articles.todays_news()
+        self.assertTrue(len(today_news)>0)
+
+
+    
